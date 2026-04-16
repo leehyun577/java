@@ -1,5 +1,419 @@
 <h1>202330126 이현</h1>
 
+## 4/15
+
+---
+
+### 생성자 개념과 목적
+
+- 생성자
+    - 객체가 생성될때 초기화 목적으로 실행되는 메소드
+    - 객체가 생성되는 순간에 자동 호출
+
+### 생성자의 특징
+
+- 생성자 이름은 크래스 이름과 동일
+- 생성자는 여러개 작성 가능(생성자 중복)
+- 생성자는 객체 생성시 한 번만 호출
+    - 자바에서 객체 생성은 반드시 new 연산자로 함
+
+### 생성자의 종류
+
+- 기본 생성자: 매개변수 없고, 아무 작업 없이 단순 리턴하는 생성자
+- 기본 생성자가 자동 생성되는 경우
+    - 클래스에 생성자가 하나도 선언되어 있지 않을 때
+    - 컴파일러에 의해 기본 생성자 자동 생성
+- 기본 생성자가 자동 생성되지 않는 경우
+    - 클래스에 생성자가 선언되어 있는경우
+
+### this 레퍼런스
+
+- 객체 자신에 대한 레퍼런스
+- 컴파일러에 의해 자동관리, 개발자는 사용하기만 하면 됨
+- this.멤버 형태로 멤버를 접근할때
+
+```java
+public class Circle {
+		int radius;
+		
+		public Circle() { radius = 1;}
+		public Circle(int r) { radius = r; } 
+		double getArea() {
+				return 3.14 * radius * radius;		
+		}
+		...
+}
+```
+
+```java
+public class Circle {
+	int radius;
+	
+	public Circle() {this.radius = 1;}
+	public Circle(int radius) {
+			this.radius = radius;
+	}
+	double getArea() {
+			return 3.14 * this.radius * this.radius;
+			}
+		...
+}
+```
+
+### this()롤 다른 생성자 호출
+
+- 같은 클래스의 다른 생성자 호출
+- 생성자 내에서만 사용 가능
+- 생성자 코드의 제일 앞에 있어야 함
+- this() 사용 실패 사례
+    
+    ```java
+    public Book() {
+    		System.out.printin("생성자 호출됨");
+    		this("","",0); // 생성자의 첫 번째 문장이 아니기 때문에 컴파일 오류
+    ```
+    
+
+### 객체 배열
+
+- 객체에 대한 레퍼런스 배열
+- 자바의 객체 배열 만들기 3 단계
+    - 1.배열 레퍼런스 변수 선언
+    - 레퍼런스 배열 생성
+    - 배열의 각 원소 객체 생성
+
+```java
+Circle [] c; // 1. Circle 배열에 대한 레퍼런스 변수 C 선언
+c= new Circle[5]; // 2. 레퍼런스 배열 생성
+
+for(int i=0; i<c.length; i++)
+	c[i] = new Circle(i);// 3. 각원소 객체 생성
+	
+
+------------------------------------------------
+for(int i =0; i<c.length; i++)
+	System.out.print((int)(c[i].getArea()) + " " );
+```
+
+### 메소드
+
+- 메소드는 C/C++의 함수 와 동일
+- 자바의 모든 메소드는 반드시 클래스 안에 있어야함 (캡슐화 원칙)
+- 메소드형식
+    
+    ```java
+    public int getSum(int i, int j) {
+    	int sum;
+    	sum = i + j;
+    	return sum;
+    }
+    ```
+    
+- 접근 지정자 : 다른 클래스에서 메소드를 접근할 수 있는지 여부 선언
+    - public, private, protected, 디폴트(접근 지정자 생략)
+- 리턴 타입 : 메소드가 리턴하는 값의 데이터 타입
+
+### 인자 전달 - 기본 탕비의 값이 전달되는 경우
+
+- 매개 변수가 byte, int, double 등 기본 타입으로 선언되었을 때
+    - 호출자가 건네는 값이 매개 변수에 복사되어 전달. 실 인자 값은 변경되지 않음
+    
+    ```java
+    	public class CallByCalue {
+    		public static void main(String args[]) {
+    			int n = 10;
+    			
+    			increase(n);
+    			
+    			System.out.println(n);
+    		}
+    ```
+    
+    ```java
+    static void increase(int m) {
+    m = m + 1;
+    
+    	}
+    }
+    ```
+    
+
+### 인자 전달 - 배열이 전달되는 경우
+
+- 배열 레퍼런스만 매개 변수에 전달 : 배열 통째로 전달되지 않음
+- 객체가 전달되는 경우와 동일 : 매개 변수가 실인자의 배열 공유
+
+```java
+public class ArrayPassing {
+	public static void main(String arg[]) {
+	int a[] = {1, 2, 3, 4, 5};
+	
+	increase(a);
+	
+	for(int i=0; i<a.length; i++)
+		System.out.print(a[i]+ " ");
+	}
+```
+
+```java
+static void increase(int [] array) {
+for(int i=0; i<a.length; i++) 
+	array[1]++;
+		}
+	}
+}
+```
+
+### 메소드 오버로딩
+
+- 한 클래스 내에서 두개 이상의 이름이 같은 메소드 작성
+    - 메소드 이름이 동일해야함
+    - 매개 변수의 갯 혹은 타입이 달라야함
+    - 리턴 타입은 오버로딩과 관련없음
+- 성공한 오버로딩과 메소드 호출
+
+```java
+public static void main(String args[]) {
+MethodSample a = new MethodSample();
+
+int i = a.getSum(1, 2);
+int j = a.getSum(1, 2, 3);
+double k = a.getSum(1.1, 2.2);
+```
+
+```java
+public class MethodSample {
+	public int getSum(int i, int j) {
+				return i + j;
+			}
+	public int getSum(int i, int j, int k) {
+				return i + j + k;
+			}
+	public int getSum(double i, double j) {
+				return i + j;
+			}
+```
+
+### 객체 치환시 주의할 점
+
+- 객체 치환은 객체 복사가 아니며, 레퍼런스의 복사이다.
+
+```java
+public class samp {
+int id;
+public Samp(int x) {this.id = x;}
+public void set(int x) {tihs.id = x;}
+public int get() {return this.id;}
+
+public static void main(String []args) {
+	Samp ob1 = new Samp(3);
+	Samp ob2 = new Samp(4);
+	Samp s;
+	
+	s=ob2;
+	ob1 = ob2;
+	System.out.println("ob1.id="+ob1.get());
+	System.out.println("ob2.id="+ob2.get());
+		}
+	}
+	
+```
+
+### 객체 소멸
+
+- new로 할당 받은 객체와 메모리를 jvm 으로 되돌려주는 행위
+- 자바 객채 소멸 연산자 없음
+- 객체 소멸은 JVM의 고유 역할
+- C/C++에서는 할당 받은 객체를 개발자가 프로그램 내에서 삭제해야함
+- C/C++의 프로그램 작성을 어렵게 만드는 요인
+- 자바에서는 사용하지 않는 객체나 배열을 돌려주는 코등 책음으로 부터 개발자 해방
+
+### 가비지
+
+- 가리키는 레퍼런스가 하나도없는 객체
+- 더 이상 접근할 수 없어 사용할 수 없게 된 메모리
+- 가비지 컬렉션: 자바 가상 기계의 가비지 컬렉터가 자동으로 가비지 수집, 변환
+
+```java
+Person a, b;
+a = new Person("이몽룡");
+b = new Person("성춘향");
+
+b = a; // b가 가리키던 객체는 가비지가 됨.
+```
+
+### 가비지 컬랙션
+
+- JVM이 가비지 자동 회수
+    - 가용 메모리 공간이 일정 이하로 부족해질떄
+    - 가비지를 수거하여 가용 메모리 공간으로 확보
+- 가비지 컬렉터에 의해 자동 수행
+- 강제 가비지 컬렉션 강제 수행: System  또는 RunTime 객체의 GC() 메소드 호출
+- 이 코드는 JVM 에 강력한 가비지 컬랙션 요청
+
+### 자바의 패키지 개념
+
+- 상호 관련 있는 클래스 파일(컴파일된 .class)을 저장하여 관리하는 디랙터리
+- 자바 응용프로그램은 하나 이상의 패키지로 구성
+
+### 접근 지정자
+
+- 자바의 접근 지정자 4가지: private, protected, public, 디폴트( 접근 지정자 생략 )
+- 접근 지정자의 목적
+    - 클래스나 일부 멤버를 공개하여 다른 클래스에서 접근하도록 허용
+    - 객체 지향 언어의 캡슐화 정책은 멤버를 보호하는것
+    → 접근 지정은 캡슐화에 묶인 보호를 일부 해제할 목적으로 사용
+- 접근 지정자에 따른 클래스나 멤버의 공개 범위
+
+### 클래스 접근 지정
+
+- 다른 클래스에서 사용하도록 허용할 지 지정
+- public 클래스 : 다른 모든 클래스에게 접근 허용
+- 디폴트 클래스(접근 지정자 생략): 같은 패키지의 클래스에만 접근 허용
+
+```java
+public class World{ // public 클래스
+...........
+}
+class Local{ // 디폴트 클래스
+........
+}
+```
+
+### 멤버 접근 지정
+
+public 멤버: 패키지에 관계 없이 모든 클래스에게 접근 허용
+
+privae 멤버: 동일 클래스 내에만 접근 허용. 상속 받은 서브 클래스에서 접근 불가.
+
+### static 멤버
+
+- static 멤버 선언
+
+```java
+class StaticSample {
+		int n;               //non-static 필드
+		void g() {...}       //non-static 메소드
+		
+		static int m;        //static 필드
+		static void f() {...}//static 메소드
+```
+
+- 객체 생성과 non-static 멤버의 생성
+:non-static 멤버는 객체가 생성될떄, 객체마다 생긴다.
+
+### static 멤버 사용
+
+- 클래스 이름으로 접근 가능
+
+```java
+staticSample.m = 3; // 클래스 이름으로 static 필드 접근
+staticSample.f().   // 클래스 이름으로 static 메소드 호출
+
+```
+
+- 객체의 멤버로 접근 가능
+
+```java
+staticSample b1 = staticSaple();
+
+b1 = -3; // 객체이름으로 static 필드 접근
+b1.f();  // 객체이름으로 static 메소드 호출
+```
+
+- non-static 멤버는 클래스이름으로 접근 안됨
+
+```java
+staticSample.n = 5;  //n은 non-staitc이미로 컴파일 오류
+staticSample.g();    //g()는 non-static이므로 컴파일 오류
+```
+
+### #non-static 모든 객체에 멤버 생성 , static은 멤버공유
+
+### static의 활용
+
+- 전역 변수와 전역 함수를 만들 때 활용
+- 공융 멤버를 만들때 : static으로 선언한 멤버는 클래스의 객체들 사이에 공유
+
+### static 메소드의 제약 조건 1
+
+- static 메소드는 오직 static 멤버만 접근 가능
+    - 객체가 생성되지 않은 상황에서도 static 메소드는 실행될 수 있기 때문에, non-static멤버 활용 불가
+    - non-static 메소드는 static 멤버 사용가능
+    
+    ```java
+    class StaticMethod{
+    	int n;
+    	void f1(int x) { n = x; } //정상
+    	void f2(int x) { m = x; } // 정상
+    	static int m;
+    	static void s1(int x) { n = x; } //컴파일 오류, static 메소드는 non-static필드 n 사용불가
+    	static void s2(int x) { f1(3); } //컴파일 오류, siatic 메소드는 non-static 메소드f1() 사용불가
+    	static void s3(int x) { m = x; ) //정상 static 매소드는 static 필드 m 사용 가능
+    		static void s4(int x) { s3(3;  ) //정상 static 메소드는 static 매소드 s3() 호출 가능
+    ```
+    
+
+### static 메소드의 제약 조건 2
+
+- static 메소드는 this 사용불가
+- static 메소드는 객체 없이도 사용 가능하므로, this 레퍼런스 사용할 수 없음
+
+ 
+
+```java
+//오류
+static void f() { this.n = x; } // 오류. static 메소드에서는 this 사용 불가능
+static void g() { this.m = x; } // 오류. static 메소드에서는 this 사용 불가능
+```
+
+### final 클래스와 메소드
+
+- final 클래스 - 더 이상 클래스 상속 불가능
+
+```java
+final class FinalClass {
+....
+}
+class DerivedClass extends FinalClass{ // 컴파일 오류
+...
+}
+```
+
+- final 메소드 - 더 이상 오버라이딩 불가능
+
+```java
+public class SuperClass{
+	protected final int finalMethod() {...}
+}
+
+class SubClass extends SuperClass{
+	protected int finalMethod{...} // 컴파일 오류, 오버라이딩 할수 없음
+}
+```
+
+### final 필드
+
+- final 필드 : 상수를 선언할 때 사용
+
+```java
+class SharedClass {
+	public static final double PI = 3.14;
+}
+```
+
+- 상수 필드는 선언 시에 초기 값을 지정하여야 한다.
+- 상수 필드는 실행 중에 값을 변경할 수 없다.
+```java
+public class FinalFieldClass {
+	final int ROWS = 10; // 상수 정의, 이때 초기 값(10) 반드시 설정
+	
+	void f() {
+		int [] intArray = new int [ROWS]; //상수 활용
+		ROWS = 30; // 컴파일 오류 발생, final 필드 값을 변경할 수 없다.
+		}
+	}
+```
 ## 4/8 수업
 
 ---
@@ -275,7 +689,8 @@ catch(ArrayIndexOutOfBoundsException){
     - 클래스에 대한 public 접근 지정 : 다른 모든 클래스에서 클래스 사용 허락
     - 맴버에 대한 public 접근 지정 : 다른 모든 클래스에게 접근 허용
 
-    ## 4주차(3/25)
+
+## 4주차(3/25)
 
 ---
 
