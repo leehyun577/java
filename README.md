@@ -1,5 +1,498 @@
 <h1>202330126 이현</h1>
 
+## 5/4
+
+### 패키지 만들기
+
+- 클래스 파일(.class)이 저장되는 위치는?
+    - 클래스나 인터페이스가 컴파일 되면 클래스 파일(.class) 생성
+    - 크래스 파일은 패키지로 선언된 디렉터리에 저장
+- 패키지 서언
+    - 소스파일의 맨 앞에 컴파일 후 저장될 패키지 지정 → package 패키지명
+
+```java
+package UI; // 아래 Tools를 컴파일 하여 UI패키지에 저장할것 지시
+
+public class Tools {
+
+....
+
+}
+
+---------------------------------------------------------------------------
+	//tools 클래스의 경로명은 UI.Tools가 됨
+---------------------------------------------------------------------------
+
+package Graphic; // 아래 Line 클래스를 Graphic 패키지에 저장
+
+import UI.Tools; // UI.Tools 클래스의 경로명 임포트
+
+public class Line extends Shape {
+	public void draw() {
+		Tools t = new Tools();
+	}
+}
+```
+
+### 디폴트 패키지
+
+- package 선언문이 없는 자바 소스 파일의 경우
+    - 컴파일러는 클래스나 인터페이스를 디폴트 패키지에 소속시킴
+    - 디폴트 패키지 → 현재 디렉터리
+
+### VS Code에서 Java Package 생성하기 1
+
+- eclipse 보다도 간단히 만들 수 있습니다.
+- 교재의 예제에서는 app과 lib package 를 만들었지만, 일반적으로 package는 
+com.foo.test와 같이 도메인의 역순으로 만드는것이 일반적
+- 먼저 다음과 같은 디렉터리를 만든다.
+ src/
+     — com/
+               — foo/
+                       — test/
+- 다음 test에서 [bar.java](http://bar.java) 파일을 생성
+- Explorer 아래쪽 “java project”를 클릭하면 package의 계층 구조를 볼 수 있습니다.
+- 사용자정의 package 를 만든후 사용하려먼 improt 키워드를 사용한다.
+    - //파일 : src/com/example/utils/HelloUtil.java
+    - //파일 : src/com/example/Main.java
+- 어떤 클래스 파일에서 package 선언을 생략하면 default package(기본패키지)에 속하게 됩니다.
+- 같은 기본 패키지에 있는 다른 클래스에서는 import없이 사용 가능합니다.
+- default package에 속해 있으면 다른 package를 사용할 수 없습니다.
+- 실제 프로젝트에서는 거의 모든 클래스가 명시적으로 package를 선언
+
+### packag의 운영 방법
+
+- 패키지 이름은 도메인 기반으로 시작(일반 관례)형식 : com.회사이름.프로젝트명.기능명
+    - 충동 방지( 전세계 어디서든 유일한 패키지명 확보 가능)/ 모듈별 분리 기능
+- 기능/역할별로 하위 패키지를 구분 : utils. controller, service 등
+- 디렉터리 구조와 package 선언을 정확히 일치해야 합니다.
+- import는 필요한 만큼만, * 전체 import는 피하는것이 좋습니다.
+
+### 자바 플랫폼의 모듈화
+
+- 자바 플랫폼
+    - 자바의 개발 환경(JDK)과 자바의 실행 환경(JRE)을 지칭. java SE(자바 API) 포함
+    - 자바 API의 모든 클래스가 여러 개의 모듈로 재구성 됨.
+    - 모듈 파일은 JDK의 jmods 디렉터리에 저장하여 배포. 현재는 OpenJDK에 따라 다름
+- 자바 모듈화의 목적
+    - 자바컴포넌트들을 필요에 따라 조립하여 사용하기 위함.
+    - 컴퓨터시스템의 불필요한 부담 감소
+    - 세밍한 모듈화를 통해 필요 없는 모듈이 로드되지 않게
+    - 소형 IoT 장치에도 자바 응용프로그램이 실행되고 성능을 유지하게 함
+
+### JDK의 주요 패키지
+
+- java.lang
+    - 스트링, 수학 함수, 입출력 등 자바 프로그래밍에 필요한 기본적인 클래스와 인터페이스
+    - 자봉으로 improt됨 - improt 문 필요 X
+- java.util
+    - 날짜, 시간, 백터, 해시맵 등과 같은 다양한 유틸리티 클래스와 인터페이스 제공
+- java.io
+    - 키보드, 모니터, 프린터, 디스크 등에 입출력을 할수 있는 클래스와 인터페이스 제공
+- java.awt
+    - GUI 프로그램을 작성하기위한 AWT패키지
+- javax.swing
+    - GUI 프로그래밍을 작성하기 위한 스윙 패키지
+
+### Object 클래스
+
+- 모든 자바 클래스는 반드시 Object를 상속받도록 자동 컴파일
+- 모든 클래스의 수퍼 클래스
+- 모든 클래스가 상속받는 공통 메소드 포함
+
+- 주요 메소드
+
+| 메소드 | 설명 |
+| --- | --- |
+| boolean equals(Object obj) | obj가 가르키는 객채와 현재 객체를 비교하여 같으면 ture 리턴 |
+| Class getClass() | 현 객체의 런타임 클래스를 리턴 |
+| int hashCode() | 현 객체에 대한 해시 코드 값 리턴 |
+| String toString() | 현 객체에 대한 문자열 표현 리턴 |
+| void notify() | 현 객체에 대해 대기하고 있는 하나의 스레드를 꺠운다. |
+| void notifyALL() | 현 객체에 대해 대기하고 있는 모든 스레드를 꺠운다. |
+| void wait() | 다른 스레드가 꺠울 떄까지 현재 스레드를 대기시킨다. |
+
+### Wrapper 클래스
+
+- Wrapper 클래스 : 자바의 기본 타입을 클래스화 한 8개 클래스를 통칭
+    - 기본타입: byte | short | int | long | char | float | double | boolean
+    - wrapper 클래스 : Byte | Short | Integer | Long | Character | Float | Double | Boolean
+
+용도 : 객체만 사용할 수 이쓴 컬렉션 등에 기본 타입의 값을 사용하기 위해 Wrapper 객체로 만들어 사용
+
+### 주요 메소드
+
+- 가장 많이 사용하는 Interger 클래스의 주요 메소드
+    - 다른  wrapper 클래스의 메소드는 이와 유사
+    
+    static int bitCount( int i) 정수 i의 이진수 표현에서 1의 개수 리턴
+    
+    float floatValue() float 타입으로 값 리턴
+    
+    int intValue() int타입으로 값 리턴
+    
+    long longValue() long 타입으로 값 리턴
+    
+    short shortValue() short 타입으로 값 리턴
+    
+    static int parseInt(string s) 스트링 s를 10진 정수로 변환한 값 리턴
+    
+    static int parseInt(String s, int radix) 스트링 S를 지정된 진법의 정수로 변환한 값 리턴
+    
+    static String toBinaryString( int i ) 정수 i를 이진수 표현으로 변환한 스트링 리턴
+    
+    static String toHexString( int i ) 정수 i를 16진수 표현으로 변환한 스트링 리턴
+    
+    static toOctalString( int i ) 정수 i를 8진수 표현으로 변환한 스트링 리턴
+    
+    static string toString( int i ) 정수 i를 스트링으로 변환하여 리턴
+    
+
+### 박싱과 언박싱
+
+- 박싱(boxing) : 기본 타입의 값을 Wrapper 객체로 변환
+- 언박싱(unboxing) : Wrapper 객체에 들어 있는 기본 타입의 값을 빼내는 것. 박싱의 반대.
+- 자동 박싱과 자동 언박싱 : JDK 1.5부터 박싱과 언박싱은 자동으로 이루어지도록 컴퍼일 됨.
+
+```java
+Integer ten = 10; //자동 박싱. integet ten = intrger.valueOf(10);로 자동처리
+int n = ten; // 자동 언박싱. int n = ten.intValue();로 자동 처리
+```
+
+### String의 생성 과 특징
+
+- 자바에는 기본 데이터 타입에 string이 없음. 대신 String 클래스를 제공.
+- string 클래스는 문자열을 나타냄
+- 스트링 리터럴(문자열 리터럴)은 string 객체로 처리됨
+- 스트링 객체의 생성 사례
+
+```java
+String str1 = "abcd";
+
+char data[] = {'a', 'b', 'c', 'd'};
+String str2 = new String(data);
+String str3 = new String("abcd"); // str2 와 str3은 모두 "abcd" 스트링
+```
+
+### 스트링 객체의 주요 특징
+
+- 스트링 객체의 주요 특징
+    - 리터럴 스티링이든 new Sting()을 생성했든 객체의 문자열 수정 불가능
+    
+    ```java
+    String s = new String("Hello"); //s의 스트링은 수정 불가능
+    String t = s.concat("Java"); // 스트링 s에 "Java"
+    ```
+    
+- 스트링 비교 : 두 스트링을 비교할 떄 반드시 equals()를 사용하여야 함
+    - eqpuals()는 내용을 비교하기 때문
+
+### 스트링 리터럴과 new String()
+
+- 스트링 리터럴
+    - 자바 가상 기계 내부에서 리터럴 테이블에 저장되고 관리됨
+    - 응용프로그램에서 공유됨
+    - 스트링 리터럴 사례 ) String s = “hello”:
+- new String()으로 생성된 스트링
+    - 스트링 객체는 힙에 생성
+    - 스트링은 공유되지 않음
+
+### String 활용
+
+- 스트링 비교, equals()와 compareTo()
+    - tmxmfld qlrydp ==연산자 절대 사용 금지
+    - equals() : 스트링이 같으면 true, 아니면 false 리턴
+    
+    ```java
+    String java = "java";
+    if(java.equals("java")) //ture
+    ```
+    
+- int compareTo(String anotherString)
+    - 문자열이 같으면 0 리턴
+    - 이문자열이 anotherString 보다 먼저 나오면 음수 리턴
+    - 이문자열이 anotherString 보다 먼저 나오면 양수 리턴
+    
+    ```java
+    String java = "java";
+    String cpp = "C++";
+    int res = java.compareTo(cpp);
+    if(res==0) System.out.println("the same");
+    else if (res < 0) System.out.println(java + " < " + cpp);
+    else System.out.println(java + " > " + cpp);
+    
+    java > C++
+    ```
+    
+- 공백 제거, String trim ()
+- 키보드나 파일로부터 스트링을 입력 시 , 스트링 앞 뒤 공백이 끼는 경우가 많다.
+    - trim()을 이용하면 스트링 앞 뒤에 있는 공백 제거
+    
+    ```java
+    String a = "xyzt";
+    String b = a.trim();
+    ```
+    
+
+### StringBuffer 클래스
+
+- 가변 스트링을 다루는 클래스
+- StringBuffer 객체 생성
+
+```java
+StringBuffer sb = new StringBuffer("java");
+```
+
+- String 클래스와 달리 문자열 변경 가능
+    - 가변 크기의 버퍼를 가지고 있어 문자열 수정 가능
+    - 문자열의 수정이 많은 작업에 적합
+- 스트링 조작 사례
+
+```java
+StringBuffer sb = new StringBuffer("This");
+
+sb.append(" is pencul.");
+sb.insert(7, "my");
+sb.replace(8, 10, "your");
+System.out.println(sb);
+```
+
+### StringTokenizer 클래스
+
+- 구분 문자를 기준으로 문자열을 분리하는 클래스
+    - 구분 문자(delimiter) : 문자열을 구분할 때 사용되는 문자
+    - 토큰(token) : 구분 문자로 분리된 문자열
+
+### Math 클래스
+
+- 기본 산술 연산 메소드를 제공하는 클래스
+- 모든 메소드는 static으로 선언
+    - 클래스 이름으로 호출 가능
+- Math.random()메소드로 난수 발생
+    - random()은 0보다 크거나 같고 1.0보다 작은 실수 난수발생
+    - 1에서 100까지의 랜덤 정수 10개 를 발생시키는 코드사례
+    
+    ```java
+    for(int x=0; x<10; x++) {
+    	int n = (int)(Math.random()*100 + 1);
+    	System.out.println(n);
+    }
+    ```
+    
+- * java.util.Random 클래스를 이용하여 난수 발생 가능
+
+```java
+Random r = new Random();
+int n = r.nextInt();
+int m = r.nextInt(100);
+```
+
+### 컬랙션(collection)의 개념
+
+- 요소(element)라고 불리는 가변 개수의 객체들의 저장소
+    - 객체들의 컨테이너라고도 불림
+    - 요소의 개수에 따라 크기 자동 조절
+    - 요소의 삽입, 삭제 에 따른 요소의 위치 자동 이동
+- 고정 크기의 배열을 다루는 어려움 해소
+- 다양한 객체들의 삽입, 삭제, 검색 등의 관리 용이
+
+### 컬렉션의 특징
+
+1. 컬랙션은 제네릭 (generics) 기법으로 구현
+- 제네릭
+    - 특정 타입만 다루지 않고, 여러 종류의 타입으로 변신할 수 있도록 클래스나 메소드를 일반화 시키는 기법
+    - 클래스나 인터페이스 이름에 <E>, <K>, <V> 등 타입 매개변수 포함
+- 제네릭 컬렉션 사례 : 벡터 Vector<E>
+    - <E>에서 E에 구체적인 타입을 주어 구체적인 타입만 다루는 벡터로 활용
+    - 정수만 다루는 컬렉션 벡터 Vector<Interger>
+    - 문자열만 다루는 컬렉션 벡터 Vector<String>
+1. 컬렉션의 요소는 객체만 가능
+- int, char, double 등의 기본 타입으로 구체화 불가
+- 컬렉션 사례
+
+```java
+Vector<int> v = new Vector<int>();// 컴파일 오류, int는 사용 불가
+Vector<Integer> v = new Vector<Integer>();//정상 코드
+```
+
+### 제네릭은 형판과 같은 개념
+
+- 제네릭은 클래스나 메소드를 형판에서 찍어내듯이 생산할 수 있도록 일반화된 형판을 만드는 기법
+
+### 제네릭의 기본 개뇸
+
+- 제네릭
+    - JDK 1.5부터 도입(2004년 기점)
+    - 모든 종류의 데이터 타입을 다룰 수 있도록 일반화된 타입 매개 변수로 클래스(인터페이스)나 메소드를 작성하는 기법
+    - C++의 템플릿과 동일
+
+### Vector<E>의 특성
+
+- <E>에 사용할 요소의 특정 타입으로 구체화
+- 베열을 가변 크기로 다룰 수 있게 하는 컨테이너
+    - 배열의 길이 제한 극복
+    - 요소의 개수가 넘치면 자동으로 길이 조절
+- 요소 객체들을 삽입, 삭제, 검색하는 컨테이너
+    - 삽입, 삭제에 따라 자동으로 요소의 위치 조정
+- Vector에 삽입 가능한 것
+    - 객체, null
+    - 기본 타입의 값은 Wrapper 객체로 만들어 저장
+- Vector에 객체 삽입
+    - 벡터의 맨 뒤, 중간에 객체 삽입 가능
+- vector에서 객체 삭제
+    - 임의의 위치에 있는 객체 삭제 가능
+
+### 컬렉션과 자동 박싱/언박싱
+
+- JDK 1.5 이전
+    - 기본 타입 데이터를 Wrapper 객체로 만들어 삽입
+    
+    ```java
+    Vector<Integer> v = new Vector<Integer>();
+    v.add(Integer.valueOF(4));
+    ```
+    
+    - 컬렉션으로부터 요소를 얻어올 떄, Wrapper 클래스로 캐스팅 필요
+    
+    ```java
+    Integer n = (integer)v.get(0);
+    int k = n.intValue(); // K = 4
+    ```
+    
+- JDK 1.5부터
+    - 자동 박싱/언박싱이 작동하여 기본 타입 값 삽입 가능
+    
+     
+    
+    ```java
+    Vector<Integer> v = new Vector<Integer> ();
+    v.add(4); // 4 -> Integer.valueOf(4)로 자동 박싱
+    int k = v.get(0); // Integer 타입이 int 타입으로 자동 언박싱, K = 4
+    ```
+    
+    - 그러나, 타입 매개 변수를 기본 타입으로 구체화할 수는 없음
+    
+    ```java
+    Vector<int> v = new Vector<int> ();// 컴파일 오류
+    ```
+    
+
+### 컬렉션 생성문의 진화 : Java 7, Java 10
+
+- java 7 이전
+    
+    ```java
+    Vector<Integer> v = new Vector<Integer> ();
+    ```
+    
+- java 7 이후
+    - 컴파일러의 타입 추로 기능 추가
+    - <>(다이아몬드 연산자)에 타입 매개변수 생략
+    
+    ```java
+    Vector<Integer> v = new Vector<>();// java 7부터 추가, 가능
+    ```
+    
+- java 10 이후
+    - var 키워드 도입, 컴파일러의 지역 변수 타입 추론 가능
+    
+    ```java
+    var v = new Vector<Integer>(); // java 10부터 추가, 가능
+    ```
+    
+
+### ArrayList<E>
+
+- 가변 크기 배열을 구현한 클래스
+    - <E>에 요소로 사용할 특정 타입으로 구체화
+- 벡터와 거의 동일
+    - 요소 삽입, 삭제, 검색 등 벡터 기능 과 거의 동일
+    - 벡터와 달리 스레드 동기화 기능 없음
+    - 다수 스레드가 동시에 ArrayList에 접근할 때 동기화 되지 않음
+    - 개발자가 스레드 동기화 코드 작성
+
+### ArrayList 와 Vector의 차이
+
+- Array와 Vector는 모두 동적으로 크기가 늘어나는 배열 기반의 리스트 클래스입니다.
+- ArrayList       Vector
+- 비동기화          동기화
+- 빠름                느림
+- 1.5배씩증가         2배씩
+- java 1.2               java 1.0
+- 요즘은 ArrayList가 기본 선택지
+- Vector는 이제 거의 사용하지 않고, 멀티스레드가 필요하면 다른방법
+(SynchronizedList, CopyOnWritArrayList)을 사용
+
+### 컬렉션의 순차 검색을 위한 Iterator
+
+- Iterator<E> 인터페이스
+    - 리스트 구조이 컬렉션에서 요소의 순차 검색을 위한 인터페이스
+    - Vector<E>, ArrayList<E>, LinkedList<E>가 상속받는 인터페이스
+- Iterator 객체 얻어내기
+    - 컬렉션의 iterator()메소드 호출: 해당 컬렉션을 순차 검색할 수 있는 Iteratorrorcp flxjs
+    
+    ```java
+    Vector<Integer> v = new Vector<Integer>();
+    Iterator<Integer> it = v.iterator();
+    
+    ========================================
+    
+    while(it.hasNext()) { // 모든 요소 방문
+    	int n = it.next(); // 다음 요소 리턴
+    	...
+    }
+    ```
+    
+
+### HashMap<K,V>
+
+- 키<Key>와 값<value>의 쌍으로 구성되는 요소를 다루는 컬렉션
+    - K : 키로 사용할 요소의 타입
+    - V : 값으로 사용할 요소의 타입
+    - 키와 값이 한 쌍으로 삽입
+    - ‘값’ 검색하기 위해서는 반드시 ‘키’를 사용
+- 삽입 및 검색이 빠른 특징
+    - 요소 삽입 : put() 메소드
+    - 요소 검색 : get() 메소드
+    
+    ```java
+    HashMap<String, String> h = new HashMap<String, String>();
+    
+    h.put("apple", "사과");
+    String kor = h.get("apple");
+    ```
+    
+
+### 제네릭 만들기
+
+- 제네릭 클래스 작성 : 클래스 이름 옆에 일반화된 타입 매개 변수 추가
+
+```java
+public class MyClass<T> {
+	T val;
+	void set(T a) {
+		val = a;
+	}
+	T get() {
+		return val;
+	}
+}
+```
+
+- 제네릭 객체 생성 및 활용
+    - 제네릭 타입에 구체적인 타입을 지정하여 객체를 생성하는 것을 구체화라고험
+```java
+MyClass<String> s = new MyClass<String>();
+s.set("hello");
+System.out.println(s.get());
+
+MyClass<Integer> n = new MyClass<Integer>(); 
+n.set(5);
+System.out.printn(n.get());
+```
+ 
+
+
 ## 4/29
 
 ### 서브클래스 객체의 모양
