@@ -1,5 +1,182 @@
 <h1>202330126 이현</h1>
 
+## 5/27
+
+### 어댑터 클래스
+
+- 이벤트 리스너 구현에 따른 부담
+    - 리스너의 추상 메소드를 모두 구현해야하는 부담
+    - 예) 마우스 리스너에서 마우스가 눌러지는 경우(mousePressed())만 처리하고자 하는 경우에도 나머지 4개의 메소드를 모두 구현해야하는 부담
+- 어댑터 클래스(Adeapter)
+    - 리스너의 모든 메소드를 단순 리턴하도록 만든 클래스
+    - mouseAdapter 예
+    
+    ```java
+    class MouseAdapter implements MouseListener, MouseMotionListener, 
+    MouseWheelListener {
+    
+    public void mousePressed(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {}
+    public void mouseDragged(MouseEvent e) {}
+    public void mouseMoved(MouseEvent e) {}
+    public void mouseWheelMoved(MouseEvent e) {}
+    ```
+    
+    - 추상메소드가 하나뿐인 리스너는 어뎁터 없음
+        - ActionAdapter, ItemAdapter 클래스는 존재하지 않음
+
+### MouseListener 대신 MouseAdapter 를 사용한 예
+
+```java
+JLabel la;
+contentPane.addMouseListener(new MyMouseListener());
+.......
+
+class MyMouseListener implements MouseListener{
+	public void mousePressed(MosenEvent e){
+		int x = e.get(x);
+		int y = e.get(y);
+		la.setLocation(x, y);
+}
+
+public void mouseReleased(MosenEvent e){}
+public void mouseClicked(MosenEvent e){}
+public void mouseEntered(MosenEvent e){}
+public void mouseExited(MosenEvent e){}
+```
+
+MouseListener를 이용한 경우
+
+```java
+JLabel la;
+contentPane.addMouseListener(new MyMouseAdapter());
+.............
+
+class MyMouseListener implements MouseListener{
+	public void mousePressed(MosenEvent e){
+		int x = e.get(x);
+		int y = e.get(y);
+		la.setLocation(x, y);
+}
+```
+
+MouseAdapter를 이용한 경우
+
+### key 이벤트와 포커스
+
+- 키 입력시, 다음 세 경우 각각 Key 이벤트 발생
+    - 키를 누르는 순간
+    - 누른 키를 뗴는 순간
+    - 누른 키를 떄는 순간(Unicode키의 경우에만)
+- 키 이벤트를 받을 수 있는 조건
+    - 모든 컴포넌트
+    - 현재 포커스(Focus)를 가진 컴포넌튼가 키 이벤트 독점
+- 포커스(focus)
+    - 컴포넌트나 응용프로그램이 키 이벤트를 독점하는 권한
+    - 컴포넌트에 포커스 설정 방범 : 다음 2 라인 코드 필요
+    
+    ```java
+    component.setFocussable(true); // component가 포커스를 받을 수 있도록 설정
+    component.requestFocus(); // component에 포커스 강제 지정
+    ```
+    
+- 자바 플랫폼마다 실행 환경의 포기화가 서로 다를 수 있기 때문에 다음 코드가 필요함
+component.setFocuseable(ture);
+
+### KeyListener
+
+- 응용프로그램에서 KeyListener를 상속받아 키 리스너 구현
+- KeyListener의 3개 메소드
+
+```java
+void KeyPressed(KeyEvent e) {
+ //이벤트 처리 루틴
+}
+void KeyReleased(KeyEvent e) {
+ //이벤트 처리 루틴
+}
+void KeyTyped(KeyEvent e) {
+ //이벤트 처리 루틴
+}
+```
+
+- 컴포넌트에 키 이벤트 리스너 달기
+
+```java
+component.addKeyListener(myKeyListener);
+```
+
+### 유니코드(Unicode) 키
+
+- 유니코드 키의 특징
+    - 국제 산업 표준
+    - 전 세계의 문자를 컴퓨터에서 일관되게 표현하기 위한 코드 체계
+    - 문자들에 대해서만 키 코드값 정의 : A~Z, a~z, 0~9, 등
+- 문자가 아닌 키 경우에는 표준화된 키 코드 값 없음
+    - <Function>키, <Home>키, <Up>키, <Delete>키, <Control> 키, <Shift>키, <Alt>등을 플랫폼에 따라 키 코드값이 다룰 수 있음
+- 유니코드 키가 입력되는경우
+    - KeyPressed(), KeyTyped(),KeyReleassed() 가 순서대로 호출
+- 유니코드 키가 아닌 경우
+    - KeyPressed(),KeyReleased() 만 호출
+
+### 가상키와 입력된 키 판별
+
+- KeyEvent 객체
+    - 입력된 키 정보를 가진 이벤트 객체
+    - KeyEvent객체의 메소드로 입력된 키 판별
+- KeyEvent 객체의 메소드로 입력된 키 판별
+    - char KeyEvent.getKeyChar()
+    - 키의 유니코드 문자 값 리턴
+    - Unicode 문자 키인 경우에만 의미 있음
+    - 입력된 키를 판별하기 위해 문자 값과 비교하면 됨
+- int KeyEvent.getkeyCode()
+    - 유니코드 키 포함
+    - 모든 키에 대한 정수형 키 코드 리턴
+    - 입력된 키를 판별하기 위해 가상키(Virtual Key) 값과 비교하여야 함
+    - 가상 키값은 KeyEvent 클래스에 상수로 선언
+
+### Mouse 이벤트와 MouseListener, MouseMotionListener
+
+- Mouse 이벤트 : 사용자의 마우스 조작에 따라 발생하는 이벤트
+
+| Mouse 이벤트 발생 | 리스너의 메소드 | 리스너 |
+| --- | --- | --- |
+| 마우스가 컴포넌트 위에 올라갈떄 | void MouseEnetered(MouseEvent E) | MouseListener |
+| 마우스가 컴포넌트에서 내려올떄 | void MouseExited(MouseEvent E) | MouseListener |
+| 마우스 버튼이 눌러졌을때 | void MousePressed(MouseEvent E) | MouseListener |
+| 눌러진 버튼이 떄이질떄 | void MouseReleased(MouseEvent E) | MouseListener |
+| 마우스가 컴포넌트를 클릭하였을떄 | void MouseClicked(MouseEvent E) | MouseListener |
+| 마우스가 드래그 되는동안 | void MouseDragged(MouseEvent E) | MouseMotionListener |
+| 마우스가 움직이는 동안 | void MouseMoved(MouseEvent E) | MouseMotionListener |
+- mouseClicked(): 마우스가 눌러진 위치에서 그대로 떄어질떄 호출
+- MouseReleased(): 마우스가 눌러진 위치에서 그대로 때어지든 아니든 항상 호출
+- MouseDragged(): 마우스가 드래그 되는 동안 계속 여러번 호출
+- 마우스가 눌러진 위치에서 떄어지는 경우 메소드 호출 순서
+    - MousePressed(),mouseReleased(),mouseClicked()
+- 마우스가 드래그될떄 호출되는 메소드 호출 순서
+    - MousePressed(), mouseDragged()
+
+### 마우스 리스너 달기와 MouseEvent 객체 활용
+
+- 마우스 리스너 달기
+    - 마우스 리스너는 컴포넌트에 다음과 같이 등록
+        - component.addMouseListener(myMouseListener);
+    - 컴포넌트가 마우스 무브(mouseMoved())나 마우스 드래깅(mouseDraggecd())을 함꼐 처리하고자 하면, MouseMotion 리스너 따로 등록
+        - component.addMouseMotionListener(myMouseMotionListener);
+- MouseEvent 객체 활용
+    - 마우스 포인터의 위치 ,컴포넌트 내 상대 위치 : int getX(). int getY()
+    
+    ```java
+    public void mousePressed(MouseEvent e) {
+    	int x = e.getX();
+    	int y = e.getY();
+    ```
+    
+    - 마우스 클릭 횟수 : int getClickCount()
+
 
 ## 5/20
 
