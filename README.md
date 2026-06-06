@@ -1,5 +1,320 @@
 <h1>202330126 이현</h1>
 
+## 6/5
+
+### 다른 컴포넌트의 메소드
+
+```java
+JLabeL()빈 레이블
+JLabeL(Icon image) 이미지 레이블
+JLabeL(String text) 문자열 레이블
+JLabeL(String text, Icon image, int hALign) 문자열과 이밎 모두 가진 레이블
+hAlign : 수평 졍렬 값으로 SwingConstants.LEFT, SwingConstants.RIGHT, 
+SwingConstants.CENTER 중 하나
+
+JButton()빈 버튼
+JButton(Icon image) 이미지 버튼
+JButton(String text) 문자열 버튼
+JButton(String text, Icon image) 무자열과 이미지 모두 가진 버튼
+
+JCheckBox() 빈 체크박스
+JCheckBox(Icon image) 이미지 체크박스
+JCheckBox(Icon image, boolean selected) 이미지 체크박스
+JCheckBox(String text, Icon image) 문자열과 이미지를 가진 체크박스
+JCheckBox(String text, Icon image, boolean selected) 문자열과 이미지 체크박스
+* selected : true면 선택 상태로 초기화
+```
+
+### 이미지 버튼 만들기
+
+- 하나의 버튼에 3개의 이미지 등록
+    - 마우스 조작에 따라 3개의 이미지중 적절한 이미지 자동 출력
+- 3개의 버튼 이미지
+    - normallcon
+        - 버튼의 보통 상태(디폴트) 떄 출력되는 이미지
+        - 생성자에 이미지 아이콘 전달 혹은 JButton의 setIcon(normalIcon);
+    - rooloverIcon
+        - 버튼에 마우스가 올라갈때 출력되는 이미지
+        - 이미지 설정 메소드: JButton의 setRolloverIcon(rolloverIcon);
+    - pressedIcon
+        - 버튼을 누른 상태 때 출력되는 이미지
+        - 이미지 설정 메소드 : JButton의 setPressedIcon(pressedIcon)
+
+### JRadioButton으로 라디오 버튼 만들기
+
+- JRadioButton의 용도
+    - 버튼 그룹을 형성하고, 그룹에 속한 버튼 중 하나만 선택되는 라디오 버튼
+    - 체크박스와의 차이점
+        - 체크박스는 가각 선택/해제가 가능하지만, 라디오 버튼은 그룹에 속한 버튼중 하나만 선택
+- 라디오버튼 생성
+
+```java
+JRadioButton()빈 라디오버튼
+JRadioButton(Icon image) 이미지 라디오 버튼
+JRadioButton(Icon image, boolean selected) 이미지 라디오 버튼
+JRadioButton(String text) 문자열 라디오 버튼
+JRadioButton(String text, boolean selected) 문자열 라디오버튼
+JRadioButton(String text, Icon image) 문자열과 이미지를 가진 라디오 버튼
+JRadioButton(String text, Icon image, boolean seLected) 문자열과 이미지를 가진 라디오 버튼
+
+*selected : true면 선택 상태로 초기화ㅣ
+```
+
+### JCheckBox로 체크박스 만들기
+
+- JCheckBox의 용도
+    - 선택(selected)과 비선택(deselected) 두상태만 가지는 버튼
+- 체크박스 생성
+
+```java
+JCheckBox() 빈 체크박스
+JCheckBox(Icon image) 이미지 체크박스
+JCheckBox(Icon image, boolean selected) 이미지 체크박스
+JCheckBox(String text, Icon image) 문자열과 임지를 가진 체크박스
+JCheckBox(String textm Icon image, boolean selected) 문자열과 임지 체크박스
+
+*selected: ture면 선택 상태로 초기회
+```
+
+```java
+JCheckBox apple = new JCheckBox("사과")
+JCheckBox pear = new JCheckBox("배", ture);
+```
+
+### JTextField로 한줄 입력 창 만들기
+
+- JTextField
+    - 한줄의 문자열을 입력받는 창 (텍스트 필드)
+        - 텍스트 입력 도중 <enter>키가 입력되면 Action 이벤트 발생
+        - 입력 가능한 문자 개수와 입력창의 크기는 서로 다름
+- 텍스트필드 생성
+
+```java
+JTextField() 빈 텍스트 필드
+JTextField(int cols) 입력 창의 열의 개수가 cols개인 텍스트 필드
+JTextField(String text) text 문자열로 초기회된 텍스트필드
+JTextField(String text, int cols) 입력 창의 열의 개수는 cols개이고 text 문자열로 초기화 된 
+텍스트 필드
+```
+
+- 컴퓨터공학과로 초킥값을 가지느 텍스트 필드 생성 예
+
+```java
+JTextField tf2 = new JTextField("컴퓨터공학과");
+```
+
+### JList<E>
+
+- JList<E>
+    - 하나 이상의 아이템을 보여주고 아이템을 선택하도록 하는 리스트
+    - Java 7 부터 제네릭 리스트로 바뀜
+        - <E>에 지정된 타입의 객체만 저장하는 리스트
+    - JScrollPane에 JList<E>를 삽입하여 스크롤 가능
+- 리스트 생성
+
+```java
+JList<E>() 빈 리스트
+JList<E>(Vector listData) 벡터로부터 아이템을 공급받는 리스트
+JList<E>(Object [] listData) 배열로부터 아이템을 공급받는 리스트
+```
+
+### JComboBox<E>
+
+- JComboBox<E>
+    - 텍스트필드와 버튼, 그리고 드롭다운 리스트로 구성되는 콤보박스
+    - 드롭다운 리스트에서 선택한 것이텍스트 필드에 나타남
+- 콤보박스 생성
+
+```java
+JComboBox<E>() 빈 콤포박스
+JComboBox<E>(Vector listData) 벡터로부터 아이템을 공급단느 콤보 박스
+JComboBox<E>(Object [] listData) 배열로부터 아이템을 공급받는 콤보박스
+```
+
+### 메뉴아이템에 Action 이벤트 달기
+
+- 메뉴아이템을 클릭하면 Action 발생
+    - 메뉴아이템은 사용자로 부터의 지시나 명령을 받는데 사용
+    - ActionListener 인터페이스로 리스너 작성
+    - 각 메뉴아이템마다 이벤트 리스너 설정
+
+```java
+JMenuItem item = new JMenuItem("Load");
+item.adddACtionListener(new MenuActionListener());
+
+class MenuActionListener implements ActionListener {
+	public void actionPerformed(ActionEvent e) {
+		//사용자가 load 메뉴아이템을 선택하는 경우 처리할 작업 구현
+		}
+}
+```
+
+### 확인 다이얼로그
+
+- 확인 다이얼로그 - JOptionPane.showConfirmDialog()
+    - 사용자로부터 yes/on 응답을 입력 받는 다이얼로그
+    
+    ```java
+    static int JOptionPane.showConFirmDiaLog(Component parentComonent, Objcet msg,
+    String title, int option Type)
+    
+    parentComonent : 다이얼로그의 부토 컴포넌트로서 다이얼로그가 출력되는 영역의 범위 지정을 위해 사용
+    (예 : 프레임). null이면 전체 화면 중앙에 출력
+    msg : 다이얼로그 메세지
+    title : 다이얼로그 타이틀
+    optionType: 다이얼로그 옵션 종류 지정
+    	YES_NO_OPTION, YES_NO_CANCEL_OPTION, OK_CANCEL_OPTION
+    리턴값: 사용자가 선택한 옵션 종류
+    	YES_OPTION, NO_OPTION, CANCEL_OPTION, OK_OPTION, CLOSED_OPTION
+    ```
+    
+
+### 자바의 입출력 스트림
+
+- 자바의 입출력 스트림
+    - 입출력 장치와 자바 응용 프로그램 연결
+        - 입력 스트림 : 입력 장치로부터 자바 프로그램으로 데이터를 전달하는 객체
+        - 출력 스트림 : 자바 프로그램에서 출력장치로 데이터를 보내는 객체
+    - 특징
+        - 입출력 스트림 기본 단위 : 바이트
+        - 단방향 스트림, 선입선출 구조
+
+### 자바의 입출력 스트리 ㅁ종류
+
+- 문자 스트림
+    - 문자만 입출력하는 스트림
+    - 문자가 아닌 바이너리 데이터는 스트림에서 처리하지 못함
+    - 문자가 아닌 데이터를 문자 스트림으로 출력하면 꺠진 기호가 출력
+    - 바이널 ㅣ파일을 문자 스트림으로 읽으면 읽을수 없는 바이트가 생겨서 오류 발생
+- 바이트 스트림
+    - 입출력 데이터를 단순 바이트의 흐름으로 처리
+    - 문자데이터 든 바이너르 데이터든 상관없이 처리 가능
+
+### 스트림 연결
+
+- 여러 개의 스트림을 연결하여 사용할 수 있음
+    - 키보드에서 문자를 입력받기 위해 System.in 과 InputStreamReader 를 연결한 코드
+    
+    ```java
+    inputStreamReader rd = new InputStreamReader(System.in);
+    ```
+    
+    ```java
+    while(true) {
+    	int c = rd.read();
+    	if(c == -1)
+    		break;
+    	}
+    ```
+    
+
+### 문자 스트림으로 텍스트 파일 읽기
+
+- 텍스트 파일을 읽기 위해 문자 스트림 FileReader 클래스 이용
+    1. 파일 입력 스트림 생성(파일열기)
+        - 스트림을 생성하고 파일을 열어 스트림과 연결
+        
+        ```java
+        FileReader fin = new FileReader("c:$$test.text")
+        ```
+        
+    2. 파일 읽기
+        - read()로 문자 하나 씩 파일에서 읽음
+        
+        ```java
+        int c;
+        while((c = fin.read()) != -1){
+        	System.out.print((char)c);
+        }
+        ```
+        
+    3. 스트림 닫기
+        - 스트림이 더 이상 필요 없을 면 닫아야 함. 닫힌 스트림에서는 읽을 수 없음
+        - close()로 스트림 닫기
+        
+        ```java
+        fin.close();
+        ```
+        
+
+### 파일 입출력과 예외 처리
+
+- 파일 입출력 동안 예외 발생 가능
+    - 스트림 생성 동안 : FileNotFonundException 발생 가능
+        - 파일의 경로명이 틀리거나, 디스크의 고장등으로 파일을 열수 없음
+        
+        ```java
+        fileReader fin = new FileReader();
+        ```
+        
+    - 파일 읽기, 쓰기 , 닫기를 하는동안 : IOException발생가능
+        - 디스크 오동작, 파일이 중간에 깨진 경우, 디스크 공간이 모자라서 파일 입출력 불가
+        무
+    
+
+### 문자 스트림으로 텍스트 파일 쓰기
+
+- 텍스트 파일에 쓰기 위해 문자 스트림 FileWriter 클래스 이용
+1. 파일 출력 스트림 생성
+    - 스트림을 생성하고 파일을 열어 스트림과 연결
+    
+    ```java
+    FileWriter fout = new FileWriter();
+    ```
+    
+2. 파일 쓰기
+    - write()로 문자 하나 씩 파일에 기록
+    
+    ```java
+    fout.write('A');
+    ```
+    
+    - 블록 단위로 쓰기 가능
+    
+    ```java
+    char [] buf = new char[1024];
+    fout.write(buf, 0, buf.length);
+    ```
+    
+3. 스트림 닫기
+    - close()로 스트림 닫기
+    
+    ```java
+    fout.close();
+    ```
+    
+
+### 바이크 스트림으로 바이너리 파일 읽기
+
+- 바이너르 파일에서 읽기위해 flieinputstream 클래스 사용
+1. 파일 입력 스트림 생성(파일 열기)
+    - 스트림을 생성하고 파일을 열어 스트림과 연결
+    
+    ```java
+    fileinputStrieam fin = new FileinputStream();
+    ```
+    
+2. 파일 읽기
+    - read()로 문자 하나 씩 파일에서 읽기
+    
+    ```java
+    int n=0, c;
+    while((c- fin.read()) ! = -1) {
+    	b[n] = (byte)c;
+    	n++;
+    }
+    ```
+    
+    - 블록 단위로 읽기 가능
+    
+    ```java
+    fin.read(b);
+    ```
+    
+3. 스트림 닫기
+    - close()로 스트림 닫기
+
+    
 ## 5/27
 
 ### 어댑터 클래스
